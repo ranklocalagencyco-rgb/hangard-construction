@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+}
+const { title, description, updated } = Astro.props;
+---
+<BaseLayout title={`${title} | Hangard Construction`} description={description}>
+  <header class="pt-32 pb-10 bg-bone border-b border-stone">
+    <Container>
+      <div class="max-w-[68ch]">
+        <Eyebrow class="mb-5">Legal</Eyebrow>
+        <h1 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-4" style="text-wrap:balance">{title}</h1>
+        <p class="font-caption text-caption uppercase tracking-[0.04em] text-slate">Last updated: {updated}</p>
+      </div>
+    </Container>
+  </header>
+  <section class="py-14 md:py-20">
+    <Container>
+      <div class="article-body max-w-[68ch]">
+        <slot />
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
