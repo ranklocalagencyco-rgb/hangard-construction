@@ -12,9 +12,13 @@ interface Props {
   title: string;
   description: string;
   jsonLd?: object[];
+  /** social share image path (under site root); defaults to the branded OG card */
+  ogImage?: string;
 }
-const { title, description, jsonLd } = Astro.props;
+const { title, description, jsonLd, ogImage = "/og/og-default.jpg" } = Astro.props;
 const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImageUrl = new URL(ogImage, site.url).href;
+const ogImageAlt = `${site.name} — premium builders in West London`;
 const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@graph": jsonLd }) : null;
 ---
 
@@ -34,6 +38,18 @@ const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@grap
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <!-- Material Symbols (icon font only; text fonts are self-hosted) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
