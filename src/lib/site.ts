@@ -6,7 +6,9 @@ export const site = {
   tagline: "Built around you. Finished to perfection.",
   description:
     "Premium construction and renovation across West London, the Chilterns and prime central London. Built around you. Finished to perfection.",
-  url: "https://hg-construction.co.uk",
+  // Canonical/base URL — drives canonical tags, OG/Twitter image, schema, sitemap, robots, llms.
+  // Switch to "https://hg-construction.co.uk" once that domain is connected in Vercel.
+  url: "https://hangard-construction.vercel.app",
   phoneDisplay: "07734 903439",
   phoneHref: "+447734903439",
   phoneIntl: "+44 7734 903439",
