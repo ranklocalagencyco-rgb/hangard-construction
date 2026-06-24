@@ -60,7 +60,7 @@ export const services: Service[] = [
     metaTitle:
       "Home Renovations & Refurbishments in Harefield & West London | Period & Full-House | Hangard",
     metaDescription:
-      "Full-house renovations, period restoration and structural alterations across West London & the Home Counties. One accountable team, finished to an exacting standard.",
+      "Full-house renovations, period restoration and structural alterations across West London & the Home Counties, finished to an exacting standard by one team.",
     h1: "Home Renovations & Refurbishments in Harefield & West London",
     lead: "Whole-house refurbishments and period restoration — managed end to end, finished to the standard the house deserves.",
     cardBlurb:
@@ -507,7 +507,7 @@ export const services: Service[] = [
     metaTitle:
       "Driveways & Patios in Harefield & West London | Block Paving & Resin | Hangard",
     metaDescription:
-      "Block paving, resin-bound and gravel driveways, patios and paving across West London & the Home Counties. Permeable, SuDS-compliant, properly drained. Free quotes.",
+      "Block paving, resin-bound & gravel driveways, patios and paving across West London. Permeable, SuDS-compliant & properly drained. Free quotes.",
     h1: "Driveways & Patios in Harefield & West London",
     lead: "Block paving, resin-bound and gravel driveways, patios and paving — properly drained and built to last.",
     cardBlurb: "Block paving, resin and gravel driveways, patios and paving.",

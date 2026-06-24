@@ -13,6 +13,6 @@ export function getStaticPaths() {
 }
 const { service } = Astro.props as { service: Service };
 ---
-<BaseLayout title={service.metaTitle} description={service.metaDescription} jsonLd={serviceGraph(service)}>
+<BaseLayout title={`${service.navLabel} in West London | Hangard Construction`} description={service.metaDescription} jsonLd={serviceGraph(service)}>
   <ServiceDetail service={service} />
 </BaseLayout>

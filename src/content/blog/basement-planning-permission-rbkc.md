@@ -1,6 +1,7 @@
 ---
 title: "Do You Need Planning Permission for a Basement in Kensington & Chelsea?"
-description: "When you need planning permission for a basement in Kensington & Chelsea, what RBKC's basement policy allows, your party-wall duties, and what the process involves."
+seoTitle: "Basement Planning Permission: Kensington & Chelsea"
+description: "When you need planning permission for a basement in Kensington & Chelsea, what RBKC's basement policy allows, and your party-wall duties."
 category: "Planning"
 pubDate: 2026-06-09
 readTime: "8 min"

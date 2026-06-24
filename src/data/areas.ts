@@ -42,8 +42,8 @@ function toArea(m: AreaMeta): Area {
     name: m.name,
     region: m.region,
     council: m.council,
-    metaTitle: `Builders in ${m.name} | Extensions, Loft Conversions & Renovations | Hangard Construction`,
-    metaDescription: `Premium builders in ${m.name}. Extensions, loft & basement conversions, kitchens, bathrooms, renovations & more — managed end to end from our Harefield base. Free quotes.`,
+    metaTitle: `Builders in ${m.name} | Hangard Construction`,
+    metaDescription: `Builders in ${m.name} — extensions, loft & basement conversions, renovations, kitchens & bathrooms, managed end to end from Harefield. Free quotes.`,
     h1: isHQ
       ? `Builders & Renovation in Harefield (Our Home Town)`
       : `Builders & Renovation in ${m.name}`,

@@ -1,5 +1,6 @@
 ---
 title: "10 Signs Your Period Roof Needs Replacing (and What It Costs)"
+seoTitle: "10 Signs Your Period Roof Needs Replacing"
 description: "The signs a period roof is failing, when to repair versus re-roof, how long roofs last, and whether you need planning permission to replace a roof."
 category: "Roofing"
 pubDate: 2026-06-18

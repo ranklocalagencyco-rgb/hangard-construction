@@ -1,6 +1,7 @@
 ---
 title: "Renovating in a Conservation Area: A Homeowner's Guide (Beaconsfield & Gerrards Cross)"
-description: "What a conservation area means for renovating your home, when you need listed building consent, how Article 4 directions work, and renovating sympathetically in the Chilterns."
+seoTitle: "Renovating in a Conservation Area: A Guide"
+description: "What a conservation area means for renovating your home, when you need listed building consent, and renovating sympathetically in the Chilterns."
 category: "Renovations"
 pubDate: 2026-06-25
 readTime: "8 min"

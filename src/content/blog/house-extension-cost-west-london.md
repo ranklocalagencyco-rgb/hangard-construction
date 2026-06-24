@@ -1,6 +1,7 @@
 ---
 title: "How Much Does a House Extension Cost in West London? (2026 Guide)"
-description: "Indicative 2026 house extension costs in West London, the cost drivers that actually move the price, the extras people forget, and when you need planning permission."
+seoTitle: "House Extension Cost in West London (2026 Guide)"
+description: "What a house extension really costs in West London in 2026 — the price drivers, the extras people forget, and when you need planning permission."
 category: "Extensions"
 pubDate: 2026-05-12
 readTime: "8 min"

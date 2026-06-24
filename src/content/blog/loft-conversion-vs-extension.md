@@ -1,5 +1,6 @@
 ---
 title: "Loft Conversion or Rear Extension: Which Adds More Value?"
+seoTitle: "Loft Conversion vs Rear Extension: Which Adds Value?"
 description: "Loft conversion or rear extension? A straight comparison of cost, disruption, planning and value to help you pick the right way to add space to your home."
 category: "Loft Conversions"
 pubDate: 2026-05-28

@@ -48,7 +48,7 @@ const graph = postGraph({
   faqs: d.faqs,
 });
 ---
-<BaseLayout title={`${d.title} | ${site.name} Journal`} description={d.description} jsonLd={graph}>
+<BaseLayout title={d.seoTitle ?? d.title} description={d.description} jsonLd={graph}>
   <header class="pt-28 md:pt-32 pb-2 bg-bone">
     <Container>
       <nav class="text-caption uppercase tracking-[0.06em] text-slate mb-8" aria-label="Breadcrumb">
