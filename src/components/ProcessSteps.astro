@@ -1,0 +1,36 @@
+---
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+
+interface Props {
+  eyebrow?: string;
+  heading?: string;
+}
+const { eyebrow = "Our process", heading = "How your project runs" } = Astro.props;
+
+const steps = [
+  { n: "01", t: "Consultation & survey", b: "We visit your home, understand your brief and take the measurements that make a quote meaningful." },
+  { n: "02", t: "Design & planning", b: "Drawings, structural engineering and planning or building-regs applications, handled for you." },
+  { n: "03", t: "Build", b: "One project-managed team on site — tidy, communicative and accountable from strip-out to snagging." },
+  { n: "04", t: "Handover & aftercare", b: "A clean finish, your completion pack, and a workmanship guarantee that stands behind the work." },
+];
+---
+<section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+  <Container>
+    <div class="max-w-2xl mb-14">
+      <Eyebrow class="mb-4">{eyebrow}</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">{heading}</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        steps.map((s) => (
+          <div class="border-t-2 border-brass pt-6">
+            <span class="font-heading text-headline-lg text-ink/15 block mb-4">{s.n}</span>
+            <h3 class="font-heading text-headline-sm font-semibold text-ink mb-3">{s.t}</h3>
+            <p class="font-body text-body-md text-slate">{s.b}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Container>
+</section>

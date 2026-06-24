@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ServiceDetail from "../../components/ServiceDetail.astro";
+import { servicesInSilo } from "../../data/services";
+import { serviceGraph } from "../../lib/schema";
+import type { Service } from "../../lib/types";
+
+export function getStaticPaths() {
+  return servicesInSilo("maintenance").map((s) => ({
+    params: { slug: s.slug },
+    props: { service: s },
+  }));
+}
+const { service } = Astro.props as { service: Service };
+---
+<BaseLayout title={service.metaTitle} description={service.metaDescription} jsonLd={serviceGraph(service)}>
+  <ServiceDetail service={service} />
+</BaseLayout>

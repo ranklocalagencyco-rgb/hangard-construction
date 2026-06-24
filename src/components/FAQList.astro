@@ -1,0 +1,64 @@
+---
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+import Icon from "./Icon.astro";
+import type { FAQ } from "../lib/types";
+
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  heading: string;
+  asideText?: string;
+  asideLinkText?: string;
+  asideHref?: string;
+  faqs: FAQ[];
+}
+const {
+  id,
+  eyebrow = "FAQs",
+  heading,
+  asideText,
+  asideLinkText,
+  asideHref = "/contact",
+  faqs,
+} = Astro.props;
+---
+<section id={id} class="py-14 md:py-24">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-4">
+        <Eyebrow class="mb-4">{eyebrow}</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-6">{heading}</h2>
+        {
+          asideText && (
+            <p class="font-body text-body-md text-slate max-w-xs">
+              {asideText}{" "}
+              {asideLinkText && (
+                <a href={asideHref} class="text-ink underline decoration-brass underline-offset-4 hover:text-brass">{asideLinkText}</a>
+              )}
+            </p>
+          )
+        }
+      </div>
+      <div class="lg:col-span-8">
+        <div class="border-t border-stone">
+          {
+            faqs.map((f) => (
+              <div class="acc border-b border-stone">
+                <button data-acc class="w-full flex items-center justify-between gap-6 py-6 text-left">
+                  <span class="font-heading text-headline-sm text-ink pr-4">{f.q}</span>
+                  <Icon name="add" class="acc-icon text-brass transition-transform shrink-0" />
+                </button>
+                <div class="acc-body">
+                  <div>
+                    <p class="font-body text-body-md text-slate pb-6 max-w-2xl">{f.a}</p>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

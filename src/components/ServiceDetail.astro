@@ -1,0 +1,176 @@
+---
+import { Image } from "astro:assets";
+import { projectImage } from "../lib/images";
+import { serviceHref, areaHref, silos } from "../lib/site";
+import { getService } from "../data/services";
+import { getAreaMeta } from "../data/areas-meta";
+import type { Service } from "../lib/types";
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import ServiceGrid from "./ServiceGrid.astro";
+import ProcessSteps from "./ProcessSteps.astro";
+import FAQList from "./FAQList.astro";
+import RelatedGuides from "./RelatedGuides.astro";
+import CTASection from "./CTASection.astro";
+
+interface Props {
+  service: Service;
+}
+const { service } = Astro.props;
+const crumbLabel =
+  service.silo === "services"
+    ? "Services"
+    : service.silo === "installations"
+      ? "Installations"
+      : "Maintenance";
+const related = service.relatedServices.map((k) => getService(k)!).filter(Boolean);
+const featured = service.featuredAreas
+  .map((slug) => getAreaMeta(slug))
+  .filter((a): a is NonNullable<typeof a> => Boolean(a));
+---
+<!-- Hero -->
+<header class="relative pt-20 bg-black text-bone overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <Image src={projectImage(service.heroImage)} alt={`${service.navLabel} — recent project`} width={1600} class="w-full h-full object-cover" loading="eager" />
+  </div>
+  <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.9), rgba(22,29,36,.5))"></div>
+  <div class="relative z-20" style="text-shadow:0 2px 18px rgba(22,29,36,.8)">
+    <Container>
+      <nav class="py-5 text-caption uppercase tracking-[0.06em] text-bone/50">
+        <a href="/" class="hover:text-brass">Home</a> <span class="mx-2">/</span>
+        <a href={silos[service.silo].href} class="hover:text-brass">{crumbLabel}</a> <span class="mx-2">/</span>
+        <span class="text-bone/80">{service.navLabel}</span>
+      </nav>
+      <div class="max-w-3xl pt-8 pb-20 md:pb-28">
+        <Eyebrow dark class="mb-5">{crumbLabel}</Eyebrow>
+        <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold mb-6" style="text-wrap:balance">{service.h1}</h1>
+        <p class="font-body text-body-lg text-bone/80 max-w-2xl">{service.lead}</p>
+        <div class="mt-9 flex flex-col sm:flex-row gap-4">
+          <Button href="/contact" variant="brass">Get a quote</Button>
+          <Button href="#faqs" variant="outline-bone">Common questions</Button>
+        </div>
+      </div>
+    </Container>
+  </div>
+</header>
+
+<!-- Overview -->
+<section class="py-14 md:py-24">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-7">
+        <Eyebrow class="mb-4">Overview</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-6">{service.overviewHeading}</h2>
+        <p class="font-body text-body-lg text-slate mb-8 max-w-2xl">{service.overviewBody}</p>
+        <ul class="space-y-4">
+          {service.overviewBullets.map((b) => (
+            <li class="flex gap-4 items-start">
+              <Icon name="check_circle" class="text-brass shrink-0" />
+              <span class="font-body text-body-md text-ink">{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="aspect-[4/5] border border-stone overflow-hidden">
+          <Image src={projectImage(service.overviewImage.src)} alt={service.overviewImage.alt} width={760} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<!-- What we do -->
+<section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+  <Container>
+    <div class="max-w-2xl mb-14">
+      <Eyebrow class="mb-4">What we do</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">{service.navLabel} services</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {service.subservices.map((s) => (
+        <div class="bg-surface border border-stone border-t-2 border-t-brass p-7">
+          <h3 class="font-heading text-headline-sm font-semibold text-ink mb-3">{s.title}</h3>
+          <p class="font-body text-body-md text-slate">{s.body}</p>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<!-- Selected work -->
+<section class="py-14 md:py-24">
+  <Container>
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div class="max-w-xl">
+        <Eyebrow class="mb-4">Selected work</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Recent {service.navLabel.toLowerCase()}</h2>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {service.gallery.map((g) => (
+        <div class="aspect-[4/5] border border-stone overflow-hidden">
+          <Image src={projectImage(g.src)} alt={g.alt} width={760} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<!-- Areas strip -->
+<section class="py-14 md:py-24 bg-black text-bone">
+  <Container>
+    <div class="max-w-2xl mb-12">
+      <Eyebrow dark class="mb-4">Where we work</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold mb-5">{service.navLabel} across the region</h2>
+      <p class="font-body text-body-md text-bone/65">A few of the areas we cover for {service.navLabel.toLowerCase()} — see all 36 on our areas page.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {featured.map((a) => (
+        <a href={areaHref(a.slug)} class="group flex items-center justify-between border border-white/15 p-6 hover:bg-brass hover:border-brass transition-colors">
+          <span>
+            <span class="block font-heading text-headline-sm text-bone group-hover:text-ink">{service.navLabel} in {a.name}</span>
+            <span class="block font-caption text-caption uppercase text-bone/60 group-hover:text-ink/70 mt-1">View area</span>
+          </span>
+          <Icon name="arrow_forward" class="text-brass group-hover:text-ink" />
+        </a>
+      ))}
+    </div>
+    <div class="mt-8">
+      <a href="/service-areas" class="inline-flex items-center text-label uppercase text-brass hover:text-bone font-label">All service areas<Icon name="arrow_forward" class="text-lg ml-1" /></a>
+    </div>
+  </Container>
+</section>
+
+<ProcessSteps />
+
+{
+  related.length > 0 && (
+    <section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+      <Container>
+        <div class="max-w-2xl mb-12">
+          <Eyebrow class="mb-4">Related services</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">You might also need</h2>
+        </div>
+        <ServiceGrid services={related} class="grid grid-cols-1 md:grid-cols-2 gap-6" />
+      </Container>
+    </section>
+  )
+}
+
+<FAQList
+  id="faqs"
+  heading={`${service.navLabel} questions`}
+  faqs={service.faqs}
+  asideText="Can't see your question?"
+  asideLinkText="Ask us directly"
+/>
+
+<RelatedGuides posts={service.guides ?? []} />
+
+<CTASection
+  heading={`Planning ${service.navLabel.toLowerCase()}?`}
+  body="Tell us about your project and we'll arrange a survey and a clear, written quote."
+/>

@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import Icon from "../components/Icon.astro";
+import ProcessSteps from "../components/ProcessSteps.astro";
+import CTASection from "../components/CTASection.astro";
+import { projectImage } from "../lib/images";
+import { aboutGraph } from "../lib/schema";
+
+const values = [
+  { t: "Craftsmanship", b: "The details others skip — shadow gaps, flush reveals, true lines — are where we spend our time." },
+  { t: "Accountability", b: "One team owns your project end to end. No finger-pointing between trades." },
+  { t: "Communication", b: "A named contact, regular updates and no surprises on cost or programme." },
+  { t: "Respect for your home", b: "Dust protection, daily clean-downs and considerate working — you still live here." },
+];
+---
+<BaseLayout
+  title="About Hangard Construction | Premium Builders in Harefield & West London"
+  description="Hangard Construction is a premium construction and renovation firm based in Harefield, working across West London and the Home Counties. Built around you. Finished to perfection."
+  jsonLd={aboutGraph()}
+>
+  <header class="relative pt-20 bg-black text-bone overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-40">
+      <Image src={projectImage("p05.png")} alt="Hangard Construction project" width={1600} class="w-full h-full object-cover" loading="eager" />
+    </div>
+    <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.92), rgba(22,29,36,.6))"></div>
+    <div class="relative z-20">
+      <Container>
+        <nav class="py-5 text-caption uppercase tracking-[0.06em] text-bone/50">
+          <a href="/" class="hover:text-brass">Home</a> <span class="mx-2">/</span>
+          <span class="text-bone/80">About</span>
+        </nav>
+        <div class="max-w-3xl pt-8 pb-20 md:pb-28">
+          <Eyebrow dark class="mb-5">About us</Eyebrow>
+          <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold mb-6" style="text-wrap:balance">Built around you. Finished to perfection.</h1>
+          <p class="font-body text-body-lg text-bone/80 max-w-xl">Hangard Construction is a premium construction and renovation firm based in Harefield, working across West London and the Home Counties.</p>
+        </div>
+      </Container>
+    </div>
+  </header>
+
+  <!-- Story -->
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div class="lg:col-span-7">
+          <Eyebrow class="mb-4">Our story</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-7">A builder with an architect's discipline.</h2>
+          <div class="space-y-5 font-body text-body-md text-slate max-w-2xl">
+            <p>Hangard Construction was founded to do one thing properly: deliver high-value home projects from concept to completion without the gaps that let standards slip. We bring design, structural work and finishing together under a single, accountable team.</p>
+            <p>The firm pairs established hands-on trade experience in plastering, painting and finishing with rigorous project management — so the structure is sound, the services are right, and the final finish is the part people remember.</p>
+            <p>From our base in Harefield we work across the Chilterns, Hertfordshire, Berkshire, the west London suburbs and prime central London, on everything from single-storey extensions to whole-house renovations and basement conversions.</p>
+          </div>
+        </div>
+        <div class="lg:col-span-5">
+          <div class="aspect-[4/5] border border-stone overflow-hidden">
+            <Image src={projectImage("p17.png")} alt="Hangard Construction project" width={760} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <ProcessSteps eyebrow="How we work" heading="Four stages, one standard." />
+
+  <CTASection heading="Let's talk about your home." body="Book a no-obligation consultation and survey with the Hangard team." />
+
+  <!-- Values -->
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="max-w-2xl mb-14">
+        <Eyebrow class="mb-4">What we value</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">The things we won't compromise on.</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10">
+        {
+          values.map((v) => (
+            <div class="flex gap-5">
+              <Icon name="check_circle" class="text-brass text-3xl shrink-0" />
+              <div>
+                <h3 class="font-heading text-headline-sm font-semibold text-ink mb-2">{v.t}</h3>
+                <p class="font-body text-body-md text-slate max-w-md">{v.b}</p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

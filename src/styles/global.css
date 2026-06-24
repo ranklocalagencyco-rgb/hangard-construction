@@ -1,0 +1,260 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Hangard Construction — design system (Tailwind v4 @theme)
+   Ported from the shipped tailwind.config. Source of truth:
+   Hanken Grotesk (headings) + Inter (body), warm Ink/Bone/Brass.
+   ============================================================ */
+
+@theme {
+  /* ---- Colour ---- */
+  --color-ink: #161d24; /* primary text, dark sections accent */
+  --color-graphite: #2e3a45; /* secondary dark surface */
+  --color-slate: #586069; /* muted / secondary text */
+  --color-stone: #e3ddd2; /* hairlines, borders */
+  --color-bone: #f6f4ef; /* page background (warm off-white) */
+  --color-brass: #b08a4f; /* accent — eyebrows, rules, CTAs on dark */
+  --color-brass-deep: #82622f; /* AA-safe gold (>=5:1) for small text on light bg */
+  --color-bronze: #8a6a3a; /* brass hover/active */
+  --color-surface: #ffffff; /* cards, inputs */
+  --color-surface-low: #f5f3ee; /* alt section bg */
+  --color-sage: #3e7a56; /* success */
+  --color-brick: #b23b3b; /* error */
+
+  /* ---- Type families ---- */
+  --font-heading: "Hanken Grotesk Variable", system-ui, sans-serif;
+  --font-body: "Inter Variable", system-ui, sans-serif;
+  --font-eyebrow: "Inter Variable", system-ui, sans-serif;
+  --font-label: "Inter Variable", system-ui, sans-serif;
+  --font-caption: "Inter Variable", system-ui, sans-serif;
+
+  /* ---- Type scale (size · line-height · tracking · weight) ---- */
+  --text-headline-xl: 56px;
+  --text-headline-xl--line-height: 60px;
+  --text-headline-xl--letter-spacing: -0.01em;
+  --text-headline-xl--font-weight: 600;
+
+  --text-headline-xl-mobile: 40px;
+  --text-headline-xl-mobile--line-height: 44px;
+  --text-headline-xl-mobile--font-weight: 600;
+
+  --text-headline-lg: 40px;
+  --text-headline-lg--line-height: 46px;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-lg-mobile: 32px;
+  --text-headline-lg-mobile--line-height: 36px;
+  --text-headline-lg-mobile--font-weight: 600;
+
+  --text-headline-md: 28px;
+  --text-headline-md--line-height: 34px;
+  --text-headline-md--font-weight: 600;
+
+  --text-headline-sm: 22px;
+  --text-headline-sm--line-height: 28px;
+  --text-headline-sm--font-weight: 600;
+
+  --text-eyebrow: 13px;
+  --text-eyebrow--line-height: 18px;
+  --text-eyebrow--letter-spacing: 0.12em;
+  --text-eyebrow--font-weight: 600;
+
+  --text-body-lg: 20px;
+  --text-body-lg--line-height: 32px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 17px;
+  --text-body-md--line-height: 28px;
+  --text-body-md--font-weight: 400;
+
+  --text-label: 13px;
+  --text-label--line-height: 20px;
+  --text-label--letter-spacing: 0.06em;
+  --text-label--font-weight: 600;
+
+  --text-caption: 13px;
+  --text-caption--line-height: 18px;
+  --text-caption--letter-spacing: 0.04em;
+  --text-caption--font-weight: 500;
+
+  /* ---- Radius (restrained; the design is largely sharp-cornered) ---- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+}
+
+/* ============================================================
+   Base + ported component behaviours (from the shipped <style>)
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animated brass underline on primary nav links */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  height: 1.5px;
+  width: 0;
+  background: var(--color-brass);
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link[aria-current="page"]::after {
+  width: 100%;
+}
+
+/* Services mega-dropdown reveal */
+.drop {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.has-drop:hover .drop,
+.has-drop:focus-within .drop {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* FAQ accordion (CSS grid height animation) */
+.acc-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+.acc.open .acc-body {
+  grid-template-rows: 1fr;
+}
+.acc-body > div {
+  overflow: hidden;
+}
+.acc.open .acc-icon {
+  transform: rotate(45deg);
+}
+
+/* Material Symbols default axis settings */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* Visible brass focus ring for keyboard users (site-wide a11y) */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Long-form Journal article body — matches the site type system on rendered markdown */
+.article-body {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 28px;
+  color: var(--color-slate);
+}
+.article-body > :first-child {
+  margin-top: 0;
+}
+.article-body p {
+  margin: 0 0 1.5rem;
+}
+.article-body h2 {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 3rem 0 1.25rem;
+}
+.article-body h3 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 2rem 0 0.75rem;
+}
+.article-body ul,
+.article-body ol {
+  margin: 0 0 1.5rem;
+  padding-left: 1.5rem;
+}
+.article-body ul {
+  list-style: disc;
+}
+.article-body ol {
+  list-style: decimal;
+}
+.article-body li {
+  margin-bottom: 0.5rem;
+}
+.article-body li::marker {
+  color: var(--color-brass);
+}
+.article-body a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-brass);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s ease;
+}
+.article-body a:hover {
+  color: var(--color-brass-deep);
+}
+.article-body strong {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+.article-body blockquote {
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: 28px;
+  line-height: 34px;
+  color: color-mix(in srgb, var(--color-ink) 85%, transparent);
+  border-left: 2px solid var(--color-brass);
+  padding-left: 1.5rem;
+  margin: 2.5rem 0;
+}
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--color-stone);
+  margin: 2.5rem 0;
+  font-size: 16px;
+}
+.article-body th {
+  text-align: left;
+  background: var(--color-surface-low);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-ink);
+  border: 1px solid var(--color-stone);
+  padding: 0.7rem 0.85rem;
+}
+.article-body td {
+  border: 1px solid var(--color-stone);
+  padding: 0.7rem 0.85rem;
+  color: var(--color-slate);
+  vertical-align: top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

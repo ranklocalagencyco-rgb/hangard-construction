@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import { projectImage } from "../lib/images";
+import { site } from "../lib/site";
+import { contactGraph } from "../lib/schema";
+
+const projectTypes = [
+  "House Extension",
+  "Loft Conversion",
+  "Home Renovation",
+  "Basement Conversion",
+  "Kitchen",
+  "Bathroom",
+  "Roofing",
+  "Electrical",
+  "Driveway / Patio",
+  "Landscaping",
+  "Property Maintenance",
+  "Plumbing & Heating",
+  "Other / not sure",
+];
+const inputClass =
+  "w-full h-[52px] px-4 bg-surface border border-stone text-ink placeholder:text-slate/60 focus:border-ink focus:ring-2 focus:ring-brass outline-none transition";
+const labelClass =
+  "block font-caption text-caption uppercase tracking-[0.04em] text-slate mb-2";
+---
+<BaseLayout
+  title="Contact Hangard Construction | Free Quotes from Builders in Harefield & West London"
+  description="Request a free, no-obligation quote for extensions, conversions, renovations & maintenance across West London. Site survey within one working day."
+  jsonLd={contactGraph()}
+>
+  <header class="pt-32 pb-10 bg-bone border-b border-stone">
+    <Container>
+      <div class="max-w-3xl">
+        <Eyebrow class="mb-5">Contact</Eyebrow>
+        <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold text-ink mb-5" style="text-wrap:balance">Request a quote</h1>
+        <p class="font-body text-body-lg text-slate max-w-xl">Tell us about your project. We'll arrange a site visit and send a clear, written quote — usually within one working day.</p>
+      </div>
+    </Container>
+  </header>
+
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-14">
+        <div class="lg:col-span-7">
+          <form action="#" method="post" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="sm:col-span-1">
+              <label class={labelClass} for="f-name">Full name</label>
+              <input id="f-name" name="name" required class={inputClass} placeholder="Jane Smith" />
+            </div>
+            <div class="sm:col-span-1">
+              <label class={labelClass} for="f-phone">Phone</label>
+              <input id="f-phone" name="phone" type="tel" class={inputClass} placeholder="07000 000000" />
+            </div>
+            <div class="sm:col-span-1">
+              <label class={labelClass} for="f-email">Email</label>
+              <input id="f-email" name="email" type="email" required class={inputClass} placeholder="jane@email.com" />
+            </div>
+            <div class="sm:col-span-1">
+              <label class={labelClass} for="f-area">Postcode / area</label>
+              <input id="f-area" name="area" class={inputClass} placeholder="e.g. Watford, WD17" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class={labelClass} for="f-type">Project type</label>
+              <select id="f-type" name="type" class={inputClass}>
+                {projectTypes.map((t) => <option>{t}</option>)}
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class={labelClass} for="f-msg">Tell us about your project</label>
+              <textarea id="f-msg" name="message" rows="5" class="w-full px-4 py-3 bg-surface border border-stone text-ink placeholder:text-slate/60 focus:border-ink focus:ring-2 focus:ring-brass outline-none transition" placeholder="A few lines on what you're planning, rough timescale and budget if you have one."></textarea>
+            </div>
+            <div class="sm:col-span-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <button type="submit" class="inline-flex items-center justify-center h-[54px] px-9 bg-black text-bone font-label text-label uppercase hover:bg-graphite hover:-translate-y-0.5 transition-all duration-300">Send enquiry</button>
+              <p class="font-caption text-caption text-slate">No obligation. We never share your details.</p>
+            </div>
+          </form>
+        </div>
+
+        <div class="lg:col-span-4 lg:col-start-9">
+          <div class="border border-stone bg-surface p-8 space-y-7">
+            <div>
+              <h3 class="font-eyebrow text-eyebrow uppercase text-brass-deep mb-3">Call us</h3>
+              <a href={`tel:${site.phoneHref}`} class="font-heading text-headline-sm text-ink hover:text-brass transition-colors">{site.phoneDisplay}</a>
+              {site.phoneNote && <p class="font-caption text-caption text-slate mt-1">{site.phoneNote}</p>}
+            </div>
+            <div class="border-t border-stone pt-6">
+              <h3 class="font-eyebrow text-eyebrow uppercase text-brass-deep mb-3">Email</h3>
+              <a href={`mailto:${site.email}`} class="font-body text-body-md text-ink hover:text-brass transition-colors break-words">{site.email}</a>
+            </div>
+            <div class="border-t border-stone pt-6">
+              <h3 class="font-eyebrow text-eyebrow uppercase text-brass-deep mb-3">Visit / post</h3>
+              <address class="not-italic font-body text-body-md text-slate">{site.addressLines[0]}<br />{site.addressLines[1]}<br />{site.addressLines[2]}</address>
+            </div>
+            <div class="border-t border-stone pt-6">
+              <h3 class="font-eyebrow text-eyebrow uppercase text-brass-deep mb-3">Hours</h3>
+              <p class="font-body text-body-md text-slate">Mon–Sat · 8am–6pm<br />Emergency call-outs by arrangement</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <section class="pb-14 md:pb-24">
+    <Container>
+      <div class="aspect-[21/9] border border-stone overflow-hidden">
+        <Image src={projectImage("p21.png")} alt="Hangard Construction — West London & the Home Counties" width={1600} class="w-full h-full object-cover" loading="lazy" />
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

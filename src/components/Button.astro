@@ -1,0 +1,19 @@
+---
+type Variant = "brass" | "ink" | "outline-ink" | "outline-bone";
+interface Props {
+  href: string;
+  variant?: Variant;
+  class?: string;
+}
+const { href, variant = "brass", class: className = "" } = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center h-[52px] px-8 font-label text-label uppercase transition-all duration-300";
+const variants: Record<Variant, string> = {
+  brass: "bg-brass text-ink hover:bg-bronze hover:-translate-y-0.5",
+  ink: "bg-black text-bone hover:bg-graphite hover:-translate-y-0.5",
+  "outline-ink": "border-[1.5px] border-ink text-ink hover:bg-brass hover:text-ink hover:border-brass hover:-translate-y-0.5",
+  "outline-bone": "border-[1.5px] border-bone/50 text-bone hover:bg-brass hover:text-ink hover:border-brass hover:-translate-y-0.5",
+};
+---
+<a href={href} class:list={[base, variants[variant], className]}><slot /></a>

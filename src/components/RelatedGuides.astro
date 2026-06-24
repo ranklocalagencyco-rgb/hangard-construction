@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+import ArticleCard from "./ArticleCard.astro";
+
+interface Props {
+  title?: string;
+  /** explicit blog post slugs, in display order */
+  posts?: string[];
+  /** alternative: auto-match all posts in this category (most recent first) */
+  category?: string;
+}
+const { title = "From the Journal", posts = [], category } = Astro.props;
+
+const all = await getCollection("blog");
+let selected: CollectionEntry<"blog">[] = [];
+
+if (posts.length > 0) {
+  const bySlug = new Map(all.map((p) => [p.id, p]));
+  selected = posts
+    .map((slug) => bySlug.get(slug))
+    .filter((p): p is CollectionEntry<"blog"> => Boolean(p));
+} else if (category) {
+  selected = all
+    .filter((p) => p.data.category === category)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+}
+selected = selected.slice(0, 3);
+
+const n = selected.length;
+const gridClass =
+  n === 1
+    ? "grid grid-cols-1 gap-6 sm:max-w-md"
+    : n === 2
+      ? "grid grid-cols-1 sm:grid-cols-2 gap-6"
+      : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6";
+---
+{
+  n > 0 && (
+    <section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+      <Container>
+        <div class="max-w-2xl mb-12">
+          <Eyebrow class="mb-4">Journal</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">{title}</h2>
+        </div>
+        <div class:list={[gridClass]}>
+          {selected.map((p) => <ArticleCard post={p} />)}
+        </div>
+      </Container>
+    </section>
+  )
+}

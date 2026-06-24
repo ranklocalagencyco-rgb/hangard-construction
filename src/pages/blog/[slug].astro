@@ -1,0 +1,119 @@
+---
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+import markImg from "../../assets/hg-mark-v2.png";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import Icon from "../../components/Icon.astro";
+import CTASection from "../../components/CTASection.astro";
+import FAQList from "../../components/FAQList.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import { projectImage } from "../../lib/images";
+import { site } from "../../lib/site";
+import { postGraph } from "../../lib/schema";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post, posts } }));
+}
+type Props = { post: CollectionEntry<"blog">; posts: CollectionEntry<"blog">[] };
+const { post, posts } = Astro.props as Props;
+const { Content } = await render(post);
+const d = post.data;
+
+const ymd = (dt: Date) => dt.toISOString().slice(0, 10);
+const dateStr = d.pubDate.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+// Related: same category first, then most recent, excluding the current post.
+const related = posts
+  .filter((p) => p.id !== post.id)
+  .sort((a, b) => {
+    const sa = a.data.category === d.category ? 0 : 1;
+    const sb = b.data.category === d.category ? 0 : 1;
+    if (sa !== sb) return sa - sb;
+    return b.data.pubDate.getTime() - a.data.pubDate.getTime();
+  })
+  .slice(0, 3);
+
+const heroUrl = new URL(projectImage(d.heroImage).src, site.url).href;
+const graph = postGraph({
+  slug: post.id,
+  title: d.title,
+  description: d.description,
+  image: heroUrl,
+  datePublished: ymd(d.pubDate),
+  dateModified: ymd(d.dateModified ?? d.pubDate),
+  faqs: d.faqs,
+});
+---
+<BaseLayout title={`${d.title} | ${site.name} Journal`} description={d.description} jsonLd={graph}>
+  <header class="pt-28 md:pt-32 pb-2 bg-bone">
+    <Container>
+      <nav class="text-caption uppercase tracking-[0.06em] text-slate mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-brass">Home</a> <span class="mx-2" aria-hidden="true">/</span>
+        <a href="/blog" class="hover:text-brass">Journal</a> <span class="mx-2" aria-hidden="true">/</span>
+        <span class="text-ink">{d.title}</span>
+      </nav>
+      <div class="max-w-3xl">
+        <Eyebrow class="mb-5">{d.category}</Eyebrow>
+        <h1 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-6" style="text-wrap:balance">{d.title}</h1>
+        <div class="flex flex-wrap items-center gap-3 font-caption text-caption text-slate">
+          <span>By {d.author}</span>
+          <span class="w-1 h-1 rounded-full bg-brass" aria-hidden="true"></span>
+          <time datetime={ymd(d.pubDate)}>{dateStr}</time>
+          <span class="w-1 h-1 rounded-full bg-brass" aria-hidden="true"></span>
+          <span>{d.readTime} read</span>
+        </div>
+      </div>
+    </Container>
+  </header>
+
+  <Container class="mt-10 md:mt-12">
+    <figure class="aspect-[16/9] border border-stone overflow-hidden">
+      <Image src={projectImage(d.heroImage)} alt={d.heroImageAlt} width={1600} class="w-full h-full object-cover" loading="eager" />
+    </figure>
+  </Container>
+
+  <article class="py-14 md:py-20">
+    <Container>
+      <div class="article-body max-w-[68ch] mx-auto">
+        <Content />
+      </div>
+    </Container>
+  </article>
+
+  <section class="py-14 md:py-20 bg-surface-low border-y border-stone">
+    <Container>
+      <div class="max-w-[68ch] mx-auto flex flex-col sm:flex-row gap-6 items-start">
+        <div class="w-16 h-16 shrink-0 overflow-hidden bg-black">
+          <Image src={markImg} alt="Hangard Construction" width={64} height={64} class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <span class="font-eyebrow text-eyebrow uppercase text-brass-deep block mb-2">Written by the Hangard Construction team</span>
+          <p class="font-body text-body-md text-slate mb-4">Hangard Construction designs, builds and renovates homes across West London, the Chilterns and prime central London — extensions, loft and basement conversions, kitchens, bathrooms and full renovations, managed end to end from our Harefield base.</p>
+          <a href="/about" class="inline-flex items-center text-label uppercase text-brass-deep hover:text-bronze font-label">About the firm<Icon name="arrow_forward" class="text-lg ml-1" /></a>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  {d.faqs && d.faqs.length > 0 && (
+    <FAQList heading="Frequently asked questions" faqs={d.faqs} asideText="Still have a question?" asideLinkText="Get in touch" />
+  )}
+
+  <CTASection heading="Planning a project?" body="Tell us about your home and we'll arrange a site visit and a clear, written quote." />
+
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="max-w-2xl mb-12">
+        <Eyebrow class="mb-4">More from the Journal</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Related articles</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {related.map((p) => <ArticleCard post={p} />)}
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

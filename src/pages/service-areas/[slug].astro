@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AreaDetail from "../../components/AreaDetail.astro";
+import { areas } from "../../data/areas";
+import { areaGraph } from "../../lib/schema";
+import type { Area } from "../../lib/types";
+
+export function getStaticPaths() {
+  return areas.map((a) => ({ params: { slug: a.slug }, props: { area: a } }));
+}
+const { area } = Astro.props as { area: Area };
+---
+<BaseLayout title={area.metaTitle} description={area.metaDescription} jsonLd={areaGraph(area)}>
+  <AreaDetail area={area} />
+</BaseLayout>

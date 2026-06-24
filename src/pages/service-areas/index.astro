@@ -1,0 +1,63 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import Icon from "../../components/Icon.astro";
+import CTASection from "../../components/CTASection.astro";
+import { projectImage } from "../../lib/images";
+import { areaHref } from "../../lib/site";
+import { areasByRegion } from "../../data/areas";
+import { areasHubGraph } from "../../lib/schema";
+---
+<BaseLayout
+  title="Areas We Cover — Builders across West London & the Home Counties | Hangard Construction"
+  description="Hangard Construction covers West London, the Chilterns, Hertfordshire, Berkshire and prime central London — 36 towns and boroughs from our Harefield base. Find your area."
+  jsonLd={areasHubGraph()}
+>
+  <header class="relative pt-20 bg-black text-bone overflow-hidden">
+    <div class="absolute inset-0 z-0 opacity-40">
+      <Image src={projectImage("p16.png")} alt="Recent project across West London" width={1600} class="w-full h-full object-cover" loading="eager" />
+    </div>
+    <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.92), rgba(22,29,36,.6))"></div>
+    <div class="relative z-20">
+      <Container>
+        <nav class="py-5 text-caption uppercase tracking-[0.06em] text-bone/50">
+          <a href="/" class="hover:text-brass">Home</a> <span class="mx-2">/</span>
+          <span class="text-bone/80">Service Areas</span>
+        </nav>
+        <div class="max-w-3xl pt-8 pb-20 md:pb-28">
+          <Eyebrow dark class="mb-5">Areas we cover</Eyebrow>
+          <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold mb-6" style="text-wrap:balance">Builders across West London & the Home Counties</h1>
+          <p class="font-body text-body-lg text-bone/80 max-w-xl">Based in Harefield, we work across the Chilterns, Hertfordshire, Berkshire, the west London suburbs and prime central London. Find your area below.</p>
+        </div>
+      </Container>
+    </div>
+  </header>
+
+  <CTASection eyebrow="Start the conversation" heading="Don't see your area?" body="We travel across the region for the right project. Get in touch and we'll let you know." />
+
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="space-y-14">
+        {
+          areasByRegion.map((group) => (
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 border-t border-stone pt-10">
+              <div class="lg:col-span-3">
+                <h2 class="font-heading text-headline-md font-semibold text-ink">{group.name}</h2>
+                <p class="font-caption text-caption uppercase text-brass-deep mt-2">{group.areas.length} areas</p>
+              </div>
+              <div class="lg:col-span-9 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3">
+                {group.areas.map((a) => (
+                  <a href={areaHref(a.slug)} class="font-body text-body-md text-slate hover:text-ink hover:translate-x-1 transition-all duration-200 inline-flex items-center">
+                    <Icon name="near_me" class="text-base text-brass mr-2" />{a.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

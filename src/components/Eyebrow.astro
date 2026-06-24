@@ -1,0 +1,10 @@
+---
+interface Props {
+  class?: string;
+  /** set on dark backgrounds — keeps the brighter brass (passes AA on dark) */
+  dark?: boolean;
+}
+const { class: className = "", dark = false } = Astro.props;
+const color = dark ? "text-brass" : "text-brass-deep";
+---
+<span class:list={["font-eyebrow text-eyebrow uppercase block", color, className]}><slot /></span>

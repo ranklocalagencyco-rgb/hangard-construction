@@ -1,0 +1,120 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
+import Eyebrow from "../../components/Eyebrow.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import { projectImage } from "../../lib/images";
+import { blogIndexGraph } from "../../lib/schema";
+
+const all = await getCollection("blog");
+const posts = all.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+const featured = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = posts.filter((p) => p.id !== featured.id);
+
+const order = ["Extensions", "Loft Conversions", "Renovations", "Planning", "Roofing", "Electrical", "Areas"];
+const present = [...new Set(posts.map((p) => p.data.category))];
+const categories = order.filter((c) => present.includes(c)).concat(present.filter((c) => !order.includes(c)));
+
+const fmt = (dt: Date) => dt.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+const graph = blogIndexGraph(
+  posts.map((p) => ({ slug: p.id, title: p.data.title, datePublished: p.data.pubDate.toISOString().slice(0, 10) })),
+);
+const fd = featured?.data;
+---
+<BaseLayout
+  title="Journal — Insights & Guides | Hangard Construction"
+  description="Expert advice on extensions, renovations, planning and premium home improvement across West London and the Home Counties."
+  jsonLd={graph}
+>
+  <header class="pt-32 pb-10 bg-bone border-b border-stone">
+    <Container>
+      <div class="max-w-3xl">
+        <Eyebrow class="mb-5">Journal</Eyebrow>
+        <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold text-ink mb-5" style="text-wrap:balance">Insights & Guides</h1>
+        <p class="font-body text-body-lg text-slate max-w-xl">Expert advice on extensions, renovations, planning and premium home improvement across West London and the Home Counties.</p>
+      </div>
+    </Container>
+  </header>
+
+  <section class="py-14 md:py-24">
+    <Container>
+      <!-- Featured -->
+      {featured && fd && (
+      <a
+        href={`/blog/${featured.id}`}
+        data-category={fd.category}
+        class="featured-card group grid grid-cols-1 lg:grid-cols-2 bg-surface border border-stone hover:shadow-[0_18px_40px_rgba(22,29,36,.12)] hover:-translate-y-1 transition-all duration-300 mb-14"
+      >
+        <div class="aspect-[16/9] lg:aspect-auto lg:min-h-[360px] overflow-hidden border-b lg:border-b-0 lg:border-r border-stone">
+          <Image src={projectImage(fd.heroImage)} alt={fd.heroImageAlt} width={1100} class="w-full h-full object-cover" loading="eager" />
+        </div>
+        <div class="p-8 md:p-10 lg:p-12 flex flex-col justify-center">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="font-eyebrow text-caption uppercase tracking-[0.12em] text-brass-deep">{fd.category}</span>
+            <span class="w-1 h-1 rounded-full bg-brass" aria-hidden="true"></span>
+            <span class="font-eyebrow text-caption uppercase tracking-[0.12em] text-slate">Featured</span>
+          </div>
+          <h2 class="font-heading text-headline-md md:text-headline-lg-mobile font-semibold text-ink mb-4 group-hover:text-brass-deep transition-colors">{fd.title}</h2>
+          <p class="font-body text-body-md text-slate mb-6">{fd.description}</p>
+          <div class="flex items-center gap-3 font-caption text-caption text-slate">
+            <time datetime={fd.pubDate.toISOString().slice(0, 10)}>{fmt(fd.pubDate)}</time>
+            <span class="w-1 h-1 rounded-full bg-brass" aria-hidden="true"></span>
+            <span>{fd.readTime} read</span>
+          </div>
+        </div>
+      </a>
+      )}
+
+      <!-- Category filter -->
+      <div id="cat-filter" class="flex flex-wrap gap-3 mb-10">
+        <button type="button" data-filter="all" class="cat-chip is-active font-label text-label uppercase border border-ink px-5 py-2 text-ink transition-colors">All</button>
+        {categories.map((c) => (
+          <button type="button" data-filter={c} class="cat-chip font-label text-label uppercase border border-stone px-5 py-2 text-slate hover:border-ink hover:text-ink transition-colors">{c}</button>
+        ))}
+      </div>
+
+      <!-- Grid -->
+      <div id="post-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {rest.map((p) => <ArticleCard post={p} />)}
+      </div>
+      <p id="no-posts" class="hidden font-body text-body-md text-slate py-10 text-center">No articles in this category yet.</p>
+    </Container>
+  </section>
+
+  <script>
+    const chips = document.querySelectorAll<HTMLButtonElement>("#cat-filter .cat-chip");
+    const cards = document.querySelectorAll<HTMLElement>("#post-grid [data-category]");
+    const featuredCard = document.querySelector<HTMLElement>(".featured-card");
+    const noPosts = document.getElementById("no-posts");
+
+    function setActive(active: HTMLButtonElement) {
+      chips.forEach((c) => {
+        c.classList.remove("is-active", "border-ink", "text-ink");
+        c.classList.add("border-stone", "text-slate");
+      });
+      active.classList.add("is-active", "border-ink", "text-ink");
+      active.classList.remove("border-stone", "text-slate");
+    }
+
+    function applyFilter(cat: string) {
+      let visible = 0;
+      const consider = (el: HTMLElement) => {
+        const show = cat === "all" || el.getAttribute("data-category") === cat;
+        el.classList.toggle("hidden", !show);
+        if (show) visible++;
+      };
+      if (featuredCard) consider(featuredCard);
+      cards.forEach(consider);
+      noPosts?.classList.toggle("hidden", visible > 0);
+    }
+
+    chips.forEach((btn) =>
+      btn.addEventListener("click", () => {
+        setActive(btn);
+        applyFilter(btn.getAttribute("data-filter") || "all");
+      }),
+    );
+  </script>
+</BaseLayout>

@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiloHub from "../../components/SiloHub.astro";
+import { siloHubGraph } from "../../lib/schema";
+---
+<BaseLayout
+  title="Property Maintenance & Outdoor — Driveways & Landscaping | Hangard Construction"
+  description="Property maintenance, driveways, patios and landscaping across West London & the Home Counties. Planned and reactive, one trusted firm."
+  jsonLd={siloHubGraph("maintenance")}
+>
+  <SiloHub silo="maintenance" />
+</BaseLayout>

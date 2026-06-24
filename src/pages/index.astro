@@ -1,11 +1,174 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import Eyebrow from "../components/Eyebrow.astro";
+import Button from "../components/Button.astro";
+import ServiceGrid from "../components/ServiceGrid.astro";
+import CTASection from "../components/CTASection.astro";
+import { projectImage } from "../lib/images";
+import { areaHref } from "../lib/site";
+import { getService } from "../data/services";
+import { areasByRegion } from "../data/areas";
+import { homeGraph } from "../lib/schema";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const featured = [
+  "services/extensions",
+  "services/loft-conversions",
+  "services/renovations",
+  "installations/kitchens",
+  "installations/bathrooms",
+  "maintenance/landscaping",
+].map((k) => getService(k)!);
+
+const trust = [
+  "Free, no-obligation quotes",
+  "Fully insured & project-managed",
+  "Based in Harefield",
+  "West London & the Home Counties",
+];
+
+const recent = [
+  { src: "p03.png", title: "Side-return extension", area: "Ealing" },
+  { src: "p30.png", title: "Mansard loft conversion", area: "Richmond" },
+  { src: "p07.png", title: "Full house renovation", area: "Beaconsfield" },
+];
 ---
+<BaseLayout
+  title="Builders in Harefield & West London | Extensions, Loft Conversions & Renovations | Hangard Construction"
+  description="Premium builders in Harefield & West London. House extensions, loft & basement conversions, kitchens, bathrooms & full renovations. Free quotes."
+  jsonLd={homeGraph()}
+>
+  <!-- Hero -->
+  <header class="relative h-[88vh] min-h-[600px] max-h-[820px] flex items-end overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <Image src={projectImage("p16.png")} alt="Hangard Construction — recent project" width={1920} class="w-full h-full object-cover" loading="eager" />
+    </div>
+    <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.94) 0%, rgba(22,29,36,.72) 32%, rgba(22,29,36,.45) 65%, rgba(22,29,36,.28) 100%)"></div>
+    <div class="relative z-20 w-full pb-16 md:pb-24 pt-32">
+      <Container>
+        <div class="max-w-3xl" style="text-shadow:0 2px 16px rgba(22,29,36,.9)">
+          <Eyebrow dark class="mb-5">Construction & Renovation · West London</Eyebrow>
+          <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold text-bone mb-6" style="text-wrap:balance">Crafting exceptional homes across West London.</h1>
+          <p class="font-body text-body-lg text-bone/85 mb-9 max-w-xl">Bespoke extensions, loft conversions and full renovations — designed, engineered and built by one accountable team, finished to an exacting standard.</p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <Button href="/contact" variant="brass" class="h-[54px]">Start your project</Button>
+            <Button href="/services" variant="outline-bone" class="h-[54px]">View our services</Button>
+          </div>
+        </div>
+      </Container>
+    </div>
+  </header>
 
-<Layout>
-	<Welcome />
-</Layout>
+  <!-- Trust strip -->
+  <section class="border-b border-stone bg-bone">
+    <Container>
+      <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 py-6 text-center">
+        {
+          trust.map((t, i) => (
+            <div class="flex items-center gap-4 md:gap-8">
+              <span class="font-caption text-caption uppercase tracking-[0.08em] text-ink/80">{t}</span>
+              {i < trust.length - 1 && <span class="hidden md:block w-1.5 h-1.5 rounded-full bg-brass" />}
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  <!-- Expertise -->
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="max-w-2xl mb-14">
+        <Eyebrow class="mb-4">Our expertise</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-5">From a single extension to a whole-house transformation.</h2>
+        <p class="font-body text-body-md text-slate">Twelve specialist trades under one roof, managed end to end — so the structure, the services and the finish all answer to the same standard.</p>
+      </div>
+      <ServiceGrid services={featured} />
+      <div class="mt-12 text-center">
+        <Button href="/services" variant="outline-ink">All 12 services</Button>
+      </div>
+    </Container>
+  </section>
+
+  <CTASection heading="Ready to start your project?" body="Tell us about your home and your plans — we'll arrange a site visit and a clear, written quote." />
+
+  <!-- Philosophy -->
+  <section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+    <Container>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-5">
+          <Eyebrow class="mb-4">Our philosophy</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-8">Crafted. Assured. Refined.</h2>
+          <blockquote class="font-heading text-headline-md italic text-ink/85 border-l-2 border-brass pl-6 mb-8">"We approach every build with the discipline of an architect and the precision of a master craftsman."</blockquote>
+          <p class="font-body text-body-md text-slate mb-8 max-w-md">Hangard Construction bridges the gap between ambitious design and flawless execution. We manage complex structural works with rigorous attention to detail — keeping you informed at every stage and your home protected throughout.</p>
+          <Button href="/about" variant="outline-ink">Read our approach</Button>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7 relative">
+          <div class="aspect-[4/5] border border-stone overflow-hidden relative z-10">
+            <Image src={projectImage("p23.png")} alt="Craftsmanship detail photo" width={760} class="w-full h-full object-cover" loading="lazy" />
+          </div>
+          <div class="hidden md:block absolute -bottom-6 -left-6 w-2/3 h-2/3 border border-stone bg-bone z-0"></div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Areas -->
+  <section class="py-14 md:py-24 bg-black text-bone">
+    <Container>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-4">
+          <Eyebrow dark class="mb-4">Where we work</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold mb-6">Areas we cover</h2>
+          <p class="font-body text-body-md text-bone/65 mb-8">From our Harefield base we serve homeowners across West London, the Chilterns, Hertfordshire, Berkshire and prime central London.</p>
+          <Button href="/service-areas" variant="brass">All 36 areas</Button>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-8">
+          {
+            areasByRegion.map((group) => (
+              <div>
+                <h3 class="font-eyebrow text-caption uppercase text-bone/60 mb-3">{group.name}</h3>
+                <ul class="space-y-2">
+                  {group.areas.slice(0, 5).map((a) => (
+                    <li>
+                      <a href={areaHref(a.slug)} class="font-body text-body-md text-bone/80 hover:text-brass transition-colors">{a.name}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Recent projects -->
+  <section class="py-14 md:py-24">
+    <Container>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div class="max-w-xl">
+          <Eyebrow class="mb-4">Selected work</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Recent projects</h2>
+        </div>
+        <p class="font-body text-body-md text-slate max-w-sm">A snapshot of homes we've extended, converted and renovated across the region.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {
+          recent.map((p) => (
+            <figure class="group">
+              <div class="aspect-[4/5] border border-stone overflow-hidden mb-4">
+                <Image src={projectImage(p.src)} alt={`${p.title} in ${p.area}`} width={760} class="w-full h-full object-cover" loading="lazy" />
+              </div>
+              <figcaption class="flex items-baseline justify-between">
+                <span class="font-heading text-headline-sm text-ink">{p.title}</span>
+                <span class="font-caption text-caption uppercase text-brass-deep">{p.area}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

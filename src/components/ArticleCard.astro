@@ -1,0 +1,35 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { projectImage } from "../lib/images";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+const { post } = Astro.props;
+const d = post.data;
+const date = d.pubDate.toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+});
+---
+<a
+  href={`/blog/${post.id}`}
+  data-category={d.category}
+  class="group flex flex-col bg-surface border border-stone hover:shadow-[0_12px_30px_rgba(22,29,36,.10)] hover:-translate-y-1 transition-all duration-300"
+>
+  <div class="aspect-[4/3] overflow-hidden border-b border-stone">
+    <Image src={projectImage(d.heroImage)} alt={d.heroImageAlt} width={760} class="w-full h-full object-cover" loading="lazy" />
+  </div>
+  <div class="p-7 flex flex-col flex-1">
+    <span class="font-eyebrow text-caption uppercase tracking-[0.12em] text-brass-deep mb-3">{d.category}</span>
+    <h3 class="font-heading text-headline-sm font-semibold text-ink mb-3 group-hover:text-brass-deep transition-colors">{d.title}</h3>
+    <p class="font-body text-body-md text-slate mb-6 flex-1">{d.description}</p>
+    <div class="flex items-center gap-3 font-caption text-caption text-slate">
+      <time datetime={d.pubDate.toISOString().slice(0, 10)}>{date}</time>
+      <span class="w-1 h-1 rounded-full bg-brass" aria-hidden="true"></span>
+      <span>{d.readTime} read</span>
+    </div>
+  </div>
+</a>

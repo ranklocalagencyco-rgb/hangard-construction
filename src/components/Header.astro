@@ -1,0 +1,153 @@
+---
+import { Image } from "astro:assets";
+import mark from "../assets/hg-mark-v2.png";
+import { site, silos, siloOrder, serviceHref, areaHref } from "../lib/site";
+import { servicesInSilo } from "../data/services";
+import Icon from "./Icon.astro";
+
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
+const servicesActive =
+  path.startsWith("/services") ||
+  path.startsWith("/installations") ||
+  path.startsWith("/maintenance");
+
+// A compact set of high-demand areas for the mobile menu.
+const mobileAreas = [
+  ["watford", "Watford"],
+  ["ealing", "Ealing"],
+  ["richmond", "Richmond"],
+  ["chiswick", "Chiswick"],
+  ["uxbridge", "Uxbridge"],
+  ["ruislip", "Ruislip"],
+  ["harefield", "Harefield"],
+  ["northwood", "Northwood"],
+  ["kensington", "Kensington"],
+  ["chelsea", "Chelsea"],
+  ["beaconsfield", "Beaconsfield"],
+  ["windsor", "Windsor"],
+] as const;
+
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/service-areas", label: "Service Areas" },
+  { href: "/blog", label: "Journal" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+---
+
+<nav
+  id="main-nav"
+  class="fixed top-0 inset-x-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 transition-all duration-300"
+>
+  <div class="flex justify-between items-center h-20 px-5 md:px-10 max-w-[1200px] mx-auto">
+    <a href="/" class="flex items-center gap-3 group shrink-0" aria-label={`${site.name} home`}>
+      <span class="flex items-center justify-center w-11 h-11 bg-black overflow-hidden shrink-0">
+        <Image src={mark} alt={site.name} width={44} height={44} class="w-full h-full object-cover" />
+      </span>
+      <span class="leading-none hidden sm:block">
+        <span class="block font-heading text-[19px] font-semibold text-bone tracking-tight">{site.shortName}</span>
+        <span class="block font-eyebrow text-[10px] tracking-[0.22em] text-brass mt-0.5">CONSTRUCTION</span>
+      </span>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-9">
+      <a
+        href="/"
+        class="nav-link font-label text-label uppercase text-bone hover:text-brass transition-colors py-2"
+        aria-current={isActive("/") ? "page" : undefined}>Home</a
+      >
+      <div class="relative has-drop">
+        <a
+          href="/services"
+          class="nav-link font-label text-label uppercase text-bone hover:text-brass transition-colors py-2"
+          aria-current={servicesActive ? "page" : undefined}>Services</a
+        >
+        <div class="drop opacity-0 invisible -translate-y-1 absolute left-1/2 -translate-x-1/2 top-full pt-4">
+          <div class="bg-surface border border-stone shadow-[0_18px_40px_rgba(22,29,36,.12)] w-[640px] grid grid-cols-3 gap-x-2 p-4">
+            {
+              siloOrder.map((silo) => (
+                <div>
+                  <a
+                    href={silos[silo].href}
+                    class="flex items-end min-h-[46px] px-3 pb-2 mb-1 border-b border-stone font-eyebrow text-caption uppercase tracking-[0.12em] text-brass-deep hover:text-bronze"
+                  >
+                    {silos[silo].eyebrow}
+                  </a>
+                  {servicesInSilo(silo).map((s) => (
+                    <a
+                      href={serviceHref(s.silo, s.slug)}
+                      class="block px-3 py-2 text-body-md text-slate hover:text-ink hover:bg-bone transition-colors"
+                    >
+                      {s.navLabel}
+                    </a>
+                  ))}
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+      {
+        navLinks.slice(1).map((l) => (
+          <a
+            href={l.href}
+            class="nav-link font-label text-label uppercase text-bone hover:text-brass transition-colors py-2"
+            aria-current={isActive(l.href) ? "page" : undefined}
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="/contact"
+        class="hidden lg:inline-flex items-center justify-center h-[50px] px-7 bg-brass text-ink font-label text-label uppercase hover:bg-bronze hover:-translate-y-0.5 transition-all duration-300"
+        >Get a quote</a
+      >
+      <button id="menu-btn" aria-label="Open menu" aria-expanded="false" class="lg:hidden p-2 text-bone">
+        <Icon name="menu" class="text-3xl" />
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="fixed inset-0 z-[60] bg-black text-bone hidden flex-col">
+  <div class="flex justify-between items-center h-20 px-5 border-b border-white/10 shrink-0">
+    <span class="font-heading text-[20px] font-semibold text-bone">{site.shortName} <span class="text-brass">Construction</span></span>
+    <button id="menu-close" aria-label="Close menu" class="p-2 text-bone"><Icon name="close" class="text-3xl" /></button>
+  </div>
+  <div class="flex-1 overflow-y-auto px-5 py-8">
+    <a href="/" class="block font-heading text-[28px] font-semibold py-3 border-b border-white/10">Home</a>
+    <a href="/services" class="block font-heading text-[28px] font-semibold py-3 border-b border-white/10">Services</a>
+    <div class="grid grid-cols-2 gap-x-6 gap-y-1 py-4 border-b border-white/10">
+      {
+        siloOrder.flatMap((silo) =>
+          servicesInSilo(silo).map((s) => (
+            <a href={serviceHref(s.silo, s.slug)} class="block text-body-md text-bone/70 hover:text-brass py-1.5">
+              {s.navLabel}
+            </a>
+          )),
+        )
+      }
+    </div>
+    <a href="/service-areas" class="block font-heading text-[28px] font-semibold py-3 border-b border-white/10">Service Areas</a>
+    <div class="grid grid-cols-2 gap-x-6 gap-y-1 py-4 border-b border-white/10">
+      {mobileAreas.map(([slug, label]) => (
+        <a href={areaHref(slug)} class="block text-body-md text-bone/70 hover:text-brass py-1.5">{label}</a>
+      ))}
+      <a href="/service-areas" class="block text-label uppercase text-brass py-1.5">All areas &rarr;</a>
+    </div>
+    <a href="/blog" class="block font-heading text-[28px] font-semibold py-3 border-b border-white/10">Journal</a>
+    <a href="/about" class="block font-heading text-[28px] font-semibold py-3 border-b border-white/10">About</a>
+    <a href="/contact" class="block font-heading text-[28px] font-semibold py-3 border-b border-white/10">Contact</a>
+  </div>
+  <div class="p-5 border-t border-white/10 shrink-0">
+    <a href="/contact" class="flex items-center justify-center h-[52px] w-full bg-brass text-ink font-label text-label uppercase">Get a quote</a>
+  </div>
+</div>

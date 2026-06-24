@@ -1,0 +1,198 @@
+---
+import { Image } from "astro:assets";
+import { projectImage } from "../lib/images";
+import { serviceHref, areaHref } from "../lib/site";
+import { services, getService } from "../data/services";
+import { getAreaMeta } from "../data/areas-meta";
+import type { Area } from "../lib/types";
+import Container from "./Container.astro";
+import Eyebrow from "./Eyebrow.astro";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import ServiceGrid from "./ServiceGrid.astro";
+import FAQList from "./FAQList.astro";
+import RelatedGuides from "./RelatedGuides.astro";
+import CTASection from "./CTASection.astro";
+
+interface Props {
+  area: Area;
+}
+const { area } = Astro.props;
+const leadServices = area.leadServices.map((k) => getService(k)!).filter(Boolean);
+const nearby = area.nearby
+  .map((slug) => getAreaMeta(slug))
+  .filter((a): a is NonNullable<typeof a> => Boolean(a));
+const [galA, galB, galC] = area.galleryImages;
+---
+<!-- Hero -->
+<header class="relative pt-20 bg-black text-bone overflow-hidden">
+  <div class="absolute inset-0 z-0 opacity-45">
+    <Image src={projectImage(area.heroImage)} alt={`Project in ${area.name}`} width={1600} class="w-full h-full object-cover" loading="eager" />
+  </div>
+  <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.94), rgba(22,29,36,.62))"></div>
+  <div class="relative z-20">
+    <Container>
+      <nav class="py-5 text-caption uppercase tracking-[0.06em] text-bone/50">
+        <a href="/" class="hover:text-brass">Home</a> <span class="mx-2">/</span>
+        <a href="/service-areas" class="hover:text-brass">Areas</a> <span class="mx-2">/</span>
+        <span class="text-bone/80">{area.name}</span>
+      </nav>
+      <div class="max-w-3xl pt-8 pb-20 md:pb-28">
+        <Eyebrow dark class="mb-5">Service area</Eyebrow>
+        <h1 class="font-heading text-headline-xl-mobile md:text-headline-xl font-semibold mb-6" style="text-wrap:balance">{area.h1}</h1>
+        <p class="font-body text-body-lg text-bone/80 max-w-2xl">{area.lead}</p>
+        <div class="mt-9 flex flex-col sm:flex-row gap-4">
+          <Button href="/contact" variant="brass">Get a quote in {area.name}</Button>
+          <Button href="#services" variant="outline-bone">Our services</Button>
+        </div>
+      </div>
+    </Container>
+  </div>
+</header>
+
+<!-- Overview -->
+<section class="py-14 md:py-24">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div class="lg:col-span-7">
+        <Eyebrow class="mb-4">Construction & renovation in {area.name}</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-6">Your local builder in {area.name}</h2>
+        <div class="space-y-5 font-body text-body-md text-slate max-w-2xl">
+          {area.intro.map((p) => <p>{p}</p>)}
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          {leadServices.map((s) => (
+            <a href={serviceHref(s.silo, s.slug)} class="inline-flex items-center gap-2 border border-stone bg-surface px-4 py-2 font-caption text-caption uppercase tracking-[0.04em] text-ink hover:border-brass hover:text-brass transition-colors">
+              <span class="w-1.5 h-1.5 rounded-full bg-brass"></span>{s.navLabel}
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="aspect-[4/5] border border-stone overflow-hidden">
+          <Image src={projectImage(area.overviewImage.src)} alt={area.overviewImage.alt} width={760} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<!-- Local knowledge -->
+<section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+  <Container>
+    <div class="max-w-2xl mb-12">
+      <Eyebrow class="mb-4">Local knowledge</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Building in {area.name}</h2>
+      <p class="font-body text-body-md text-slate mt-4">We tailor every project to the homes, ground and planning context of {area.name} — here's what that means in practice.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {area.localKnowledge.map((card) => (
+        <div class="bg-surface border border-stone p-8">
+          <h3 class="font-heading text-headline-sm font-semibold text-ink mb-5">{card.heading}</h3>
+          <ul class="space-y-4">
+            {card.points.map((pt) => (
+              <li class="flex gap-3 items-start font-body text-body-md text-slate">
+                <Icon name="home_work" class="text-brass text-xl shrink-0" />
+                <span set:html={pt} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<!-- Why us -->
+<section class="py-14 md:py-24 bg-black text-bone">
+  <Container>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div class="lg:col-span-5">
+        <Eyebrow dark class="mb-4">Why Hangard</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold mb-6">Why {area.name} homeowners choose us</h2>
+        <p class="font-body text-body-md text-bone/65 max-w-md">What sets us apart in {area.name} isn't a sales pitch — it's knowing the homes, the ground and the planning here, and building accordingly.</p>
+      </div>
+      <div class="lg:col-span-6 lg:col-start-7 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
+        {area.whyUs.map((w) => (
+          <div class="border-t-2 border-brass pt-5">
+            <h3 class="font-heading text-headline-sm font-semibold text-bone mb-2">{w.title}</h3>
+            <p class="font-body text-body-md text-bone/60">{w.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </Container>
+</section>
+
+<!-- Popular projects -->
+<section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+  <Container>
+    <div class="max-w-2xl mb-12">
+      <Eyebrow class="mb-4">Most in demand</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Popular projects in {area.name}</h2>
+    </div>
+    <ServiceGrid services={leadServices} />
+  </Container>
+</section>
+
+<!-- All services in area -->
+<section id="services" class="py-14 md:py-24">
+  <Container>
+    <div class="max-w-2xl mb-12">
+      <Eyebrow class="mb-4">Everything we do</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">All our services in {area.name}</h2>
+      <p class="font-body text-body-md text-slate mt-4">One firm for every part of your project, across {area.name} and the surrounding area.</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-stone border border-stone">
+      {services.map((s) => (
+        <a href={serviceHref(s.silo, s.slug)} class="group flex items-center justify-between gap-4 bg-bone hover:bg-surface p-5 transition-colors">
+          <span class="font-body text-body-md text-ink group-hover:text-brass">{s.navLabel} in {area.name}</span>
+          <Icon name="arrow_forward" class="text-brass text-lg group-hover:translate-x-1 transition-transform" />
+        </a>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<!-- Recent projects -->
+<section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+  <Container>
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div class="max-w-xl">
+        <Eyebrow class="mb-4">Selected work</Eyebrow>
+        <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Recent projects near {area.name}</h2>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[galA, galB, galC].map((g) => (
+        <div class="aspect-[4/5] border border-stone overflow-hidden">
+          <Image src={projectImage(g)} alt={`Recent project near ${area.name}`} width={760} class="w-full h-full object-cover" loading="lazy" />
+        </div>
+      ))}
+    </div>
+  </Container>
+</section>
+
+<FAQList heading={`${area.name} questions`} faqs={area.faqs} asideText="Something else on your mind?" asideLinkText="Get in touch" />
+
+<RelatedGuides posts={area.guides} />
+
+<CTASection heading={`Planning a project in ${area.name}?`} body="Tell us what you have in mind and we'll arrange a survey and a clear, written quote." />
+
+<!-- Nearby -->
+<section class="py-14 md:py-24 bg-surface-low border-y border-stone">
+  <Container>
+    <div class="max-w-2xl mb-10">
+      <Eyebrow class="mb-4">Nearby</Eyebrow>
+      <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink">Other areas we cover</h2>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      {nearby.map((a) => (
+        <a href={areaHref(a.slug)} class="inline-flex items-center gap-2 border border-stone bg-surface px-5 py-3 font-body text-body-md text-ink hover:border-brass hover:text-brass transition-colors">
+          <Icon name="near_me" class="text-brass text-lg" />{a.name}
+        </a>
+      ))}
+      <a href="/service-areas" class="inline-flex items-center gap-2 px-5 py-3 font-label text-label uppercase text-brass-deep hover:text-bronze">All areas<Icon name="arrow_forward" class="text-lg" /></a>
+    </div>
+  </Container>
+</section>
