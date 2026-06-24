@@ -26,7 +26,7 @@ const footerAreas = [
   ["harefield", "Harefield"],
 ] as const;
 
-const year = 2025;
+const year = new Date().getFullYear();
 ---
 
 <footer class="bg-black text-bone pt-14 md:pt-24 pb-10 border-t border-white/10">
@@ -78,12 +78,16 @@ const year = 2025;
   </div>
 
   <div class="max-w-[1200px] mx-auto px-5 md:px-10 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-    <p class="font-body text-caption text-bone/60">© {year} {site.name}. {site.tagline}</p>
+    <p class="font-body text-caption text-bone/60">© {year} {site.name}. All rights reserved.</p>
     <div class="flex flex-wrap gap-x-6 gap-y-2">
       <a href="/blog" class="text-caption text-bone/60 hover:text-brass transition-colors">Journal</a>
       <a href="/privacy-policy" class="text-caption text-bone/60 hover:text-brass transition-colors">Privacy Policy</a>
       <a href="/terms" class="text-caption text-bone/60 hover:text-brass transition-colors">Terms</a>
       <a href="/cookies" class="text-caption text-bone/60 hover:text-brass transition-colors">Cookies</a>
     </div>
+  </div>
+
+  <div class="max-w-[1200px] mx-auto px-5 md:px-10 mt-6 text-center">
+    <p class="font-caption text-caption text-bone/55">This site is powered by <span class="text-brass">Ranklocalagency</span></p>
   </div>
 </footer>
