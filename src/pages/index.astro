@@ -40,12 +40,12 @@ const recent = [
   jsonLd={homeGraph()}
 >
   <!-- Hero -->
-  <header class="relative h-[88vh] min-h-[600px] max-h-[820px] flex items-end overflow-hidden">
+  <header class="relative flex items-end overflow-hidden min-h-[88dvh] md:min-h-[600px] md:h-[88vh] md:max-h-[820px]">
     <div class="absolute inset-0 z-0">
       <Image src={projectImage("p16.png")} alt="Hangard Construction — recent project" width={1920} class="w-full h-full object-cover" loading="eager" />
     </div>
     <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.94) 0%, rgba(22,29,36,.72) 32%, rgba(22,29,36,.45) 65%, rgba(22,29,36,.28) 100%)"></div>
-    <div class="relative z-20 w-full pb-16 md:pb-24 pt-32">
+    <div class="relative z-20 w-full pb-16 md:pb-24 pt-28 md:pt-32">
       <Container>
         <div class="max-w-3xl" style="text-shadow:0 2px 16px rgba(22,29,36,.9)">
           <Eyebrow dark class="mb-5">Construction & Renovation · West London</Eyebrow>
