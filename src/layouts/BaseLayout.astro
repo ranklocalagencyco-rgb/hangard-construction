@@ -14,8 +14,11 @@ interface Props {
   jsonLd?: object[];
   /** social share image path (under site root); defaults to the branded OG card */
   ogImage?: string;
+  /** shorter description for social cards (≤125 chars); falls back to description */
+  ogDescription?: string;
 }
-const { title, description, jsonLd, ogImage = "/og/og-default.jpg" } = Astro.props;
+const { title, description, jsonLd, ogImage = "/og/og-default.jpg", ogDescription } = Astro.props;
+const ogDesc = ogDescription ?? description;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImageUrl = new URL(ogImage, site.url).href;
 const ogImageAlt = `${site.name} — premium builders in West London`;
@@ -36,7 +39,7 @@ const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@grap
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={ogDesc} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
@@ -47,7 +50,7 @@ const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@grap
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={ogDesc} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
