@@ -64,6 +64,11 @@ const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@grap
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
       rel="stylesheet"
     />
+    <!-- WebMCP: exposes site tools to AI agents (Chrome origin trial).
+         Must stay an external script — the origin-trial token is a third-party
+         token, which Chrome only honours when injected from an external file. -->
+    <script src="/webmcp.js" defer is:inline></script>
+
     {graph && <script type="application/ld+json" is:inline set:html={graph} />}
     <slot name="head" />
   </head>
