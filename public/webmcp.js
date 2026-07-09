@@ -141,12 +141,23 @@
     return filled;
   }
 
-  // Apply a prefill that was queued before navigating to /contact.
+  // Apply a prefill queued before navigating to /contact. Two sources: the
+  // homepage callback form stashes fields in sessionStorage, but falls back to a
+  // native GET when storage is unavailable, so read the querystring too.
   try {
-    const pending = sessionStorage.getItem(PREFILL_KEY);
-    if (pending && onContactPage()) {
-      sessionStorage.removeItem(PREFILL_KEY);
-      fillContactForm(JSON.parse(pending));
+    if (onContactPage()) {
+      const data = {};
+      const query = new URLSearchParams(location.search);
+      for (const key of Object.keys(FIELDS)) {
+        const value = query.get(key);
+        if (value) data[key] = value;
+      }
+      const pending = sessionStorage.getItem(PREFILL_KEY);
+      if (pending) {
+        sessionStorage.removeItem(PREFILL_KEY);
+        Object.assign(data, JSON.parse(pending));
+      }
+      if (Object.keys(data).length) fillContactForm(data);
     }
   } catch (_) {}
 

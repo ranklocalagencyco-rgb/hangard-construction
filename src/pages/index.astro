@@ -7,7 +7,7 @@ import Button from "../components/Button.astro";
 import ServiceGrid from "../components/ServiceGrid.astro";
 import CTASection from "../components/CTASection.astro";
 import { projectImage } from "../lib/images";
-import { areaHref } from "../lib/site";
+import { areaHref, site } from "../lib/site";
 import { getService } from "../data/services";
 import { areasByRegion } from "../data/areas";
 import { homeGraph } from "../lib/schema";
@@ -33,6 +33,11 @@ const recent = [
   { src: "p30.png", title: "Mansard loft conversion", area: "Richmond" },
   { src: "p07.png", title: "Full house renovation", area: "Beaconsfield" },
 ];
+
+const inputClass =
+  "w-full h-[52px] px-4 bg-surface border border-stone text-ink placeholder:text-slate/60 focus:border-ink focus:ring-2 focus:ring-brass outline-none transition";
+const labelClass =
+  "block font-caption text-caption uppercase tracking-[0.04em] text-slate mb-2";
 ---
 <BaseLayout
   title="Builders in Harefield & West London | Hangard"
@@ -175,4 +180,72 @@ const recent = [
       </div>
     </Container>
   </section>
+
+  <!-- Request a callback -->
+  <section class="py-14 md:py-24 bg-surface-low border-t border-stone">
+    <Container>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-10 items-start">
+        <div class="lg:col-span-5">
+          <Eyebrow class="mb-4">Request a callback</Eyebrow>
+          <h2 class="font-heading text-headline-lg-mobile md:text-headline-lg font-semibold text-ink mb-5">Prefer that we call you?</h2>
+          <p class="font-body text-body-md text-slate mb-6 max-w-md">Leave your name and number and we'll ring you back — usually the same working day. Mon–Sat, 8am–6pm.</p>
+          <p class="font-body text-body-md text-slate">Or call us now on <a href={`tel:${site.phoneHref}`} class="text-brass-deep underline underline-offset-2 hover:text-ink transition-colors">{site.phoneDisplay}</a>.</p>
+        </div>
+
+        <div class="lg:col-span-6 lg:col-start-7">
+          <!-- WebMCP declarative tool — lets AI agents request a callback.
+               Deliberately no `toolautosubmit`: this hands off to /contact with the
+               fields prefilled, and the customer presses "Send enquiry" there. -->
+          <form
+            id="callback-form"
+            action="/contact"
+            method="get"
+            toolname="request_callback"
+            tooldescription="Ask Hangard Construction, premium builders in Harefield and West London, to call the customer back about a building project. This opens their full enquiry form with the details already filled in. It does not send anything — the customer completes the enquiry themselves."
+            class="border border-stone bg-surface p-7 md:p-8 grid grid-cols-1 sm:grid-cols-2 gap-6"
+          >
+            <div class="sm:col-span-1">
+              <label class={labelClass} for="cb-name">Full name</label>
+              <input id="cb-name" name="name" required class={inputClass} placeholder="Jane Smith" toolparamdescription="The customer's full name." />
+            </div>
+            <div class="sm:col-span-1">
+              <label class={labelClass} for="cb-phone">Phone</label>
+              <input id="cb-phone" name="phone" type="tel" required class={inputClass} placeholder="07000 000000" toolparamdescription="The phone number to call the customer back on." />
+            </div>
+            <div class="sm:col-span-2">
+              <label class={labelClass} for="cb-area">Postcode / area</label>
+              <input id="cb-area" name="area" class={inputClass} placeholder="e.g. Watford, WD17" toolparamdescription="The postcode or area where the work will take place, for example 'Watford, WD17'. Optional." />
+            </div>
+            <div class="sm:col-span-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <button type="submit" class="inline-flex items-center justify-center h-[54px] px-9 bg-black text-bone font-label text-label uppercase hover:bg-graphite hover:-translate-y-0.5 transition-all duration-300">Request callback</button>
+              <p class="font-caption text-caption text-slate">No obligation. We never share your details.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <script is:inline>
+    // Hand the callback fields to /contact via sessionStorage rather than the
+    // querystring, so a name and phone number never land in the address bar or
+    // the server access log. Falls back to the form's native GET if storage is
+    // unavailable (private mode, storage disabled) — webmcp.js reads both.
+    (() => {
+      const form = document.getElementById("callback-form");
+      if (!form) return;
+      form.addEventListener("submit", (event) => {
+        let stored = false;
+        try {
+          const data = Object.fromEntries(new FormData(form).entries());
+          sessionStorage.setItem("hg:quote-prefill", JSON.stringify(data));
+          stored = true;
+        } catch (_) {}
+        if (stored) {
+          event.preventDefault();
+          location.assign("/contact");
+        }
+      });
+    })();
+  </script>
 </BaseLayout>

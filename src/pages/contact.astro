@@ -47,12 +47,19 @@ const labelClass =
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-x-6 gap-y-14">
         <div class="lg:col-span-7">
           <!-- WebMCP declarative tool — lets AI agents fill this enquiry form.
-               Deliberately no `toolautosubmit`: the customer presses "Send enquiry". -->
+               Deliberately no `toolautosubmit`: the customer completes the enquiry.
+
+               TODO: this form has no delivery backend. Until one exists, submitting
+               reveals #enquiry-status and directs the customer to the phone, rather
+               than POSTing to "#" and silently discarding the lead. Wire up a form
+               endpoint (Web3Forms/Formspree) or a Vercel function + Resend, then
+               drop the submit handler at the foot of this file. -->
           <form
+            id="enquiry-form"
             action="#"
             method="post"
             toolname="submit_enquiry"
-            tooldescription="Request a free, no-obligation quote from Hangard Construction, premium builders in Harefield and West London. Fill in the customer's contact details and a description of their project. The customer must press 'Send enquiry' to submit — nothing is sent automatically."
+            tooldescription="Request a free, no-obligation quote from Hangard Construction, premium builders in Harefield and West London. Fill in the customer's contact details and a description of their project. Nothing is submitted automatically — the customer completes the enquiry themselves."
             class="grid grid-cols-1 sm:grid-cols-2 gap-6"
           >
             <div class="sm:col-span-1">
@@ -86,6 +93,15 @@ const labelClass =
               <p class="font-caption text-caption text-slate">No obligation. We never share your details.</p>
             </div>
           </form>
+
+          <div id="enquiry-status" role="status" hidden class="mt-8 border-l-2 border-brass bg-surface p-6">
+            <p class="font-heading text-headline-sm text-ink mb-2">Nearly there — give us a ring</p>
+            <p class="font-body text-body-md text-slate">
+              The quickest way to reach us right now is by phone. Call
+              <a href={`tel:${site.phoneHref}`} class="text-brass-deep underline underline-offset-2 hover:text-ink transition-colors">{site.phoneDisplay}</a>
+              (Mon–Sat, 8am–6pm) and quote your postcode. Your details are still on screen — nothing has been sent.
+            </p>
+          </div>
         </div>
 
         <div class="lg:col-span-4 lg:col-start-9">
@@ -120,4 +136,20 @@ const labelClass =
       </div>
     </Container>
   </section>
+
+  <script is:inline>
+    // Interim: there is no form endpoint, so `action="#"` would reload the page and
+    // discard the enquiry. Hold the submit and point the customer at the phone
+    // instead. Delete this once a real endpoint is wired up (see the form's TODO).
+    (() => {
+      const form = document.getElementById("enquiry-form");
+      const status = document.getElementById("enquiry-status");
+      if (!form || !status) return;
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        status.hidden = false;
+        status.scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    })();
+  </script>
 </BaseLayout>
