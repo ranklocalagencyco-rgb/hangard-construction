@@ -101,7 +101,29 @@
   ].map(([title, path]) => ({ title, url: SITE + path }));
 
   const PREFILL_KEY = "hg:quote-prefill";
-  const FIELDS = { name: "f-name", email: "f-email", phone: "f-phone", message: "f-msg" };
+  const FIELDS = {
+    name: "f-name",
+    email: "f-email",
+    phone: "f-phone",
+    area: "f-area",
+    projectType: "f-type",
+    message: "f-msg",
+  };
+  const PROJECT_TYPES = [
+    "House Extension",
+    "Loft Conversion",
+    "Home Renovation",
+    "Basement Conversion",
+    "Kitchen",
+    "Bathroom",
+    "Roofing",
+    "Electrical",
+    "Driveway / Patio",
+    "Landscaping",
+    "Property Maintenance",
+    "Plumbing & Heating",
+    "Other / not sure",
+  ];
   const onContactPage = () => location.pathname.replace(/\/+$/, "") === "/contact";
 
   function fillContactForm(data) {
@@ -111,6 +133,7 @@
       if (el && data[key]) {
         el.value = data[key];
         el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.dispatchEvent(new Event("change", { bubbles: true }));
         filled++;
       }
     }
@@ -204,6 +227,15 @@
           name: { type: "string", description: "The customer's full name." },
           email: { type: "string", description: "The customer's email address." },
           phone: { type: "string", description: "The customer's phone number. Optional." },
+          area: {
+            type: "string",
+            description: "Postcode or area where the work will take place, e.g. 'Watford, WD17'. Optional.",
+          },
+          projectType: {
+            type: "string",
+            enum: PROJECT_TYPES,
+            description: "The kind of project. Optional.",
+          },
           message: {
             type: "string",
             description: "A few lines on the project, rough timescale and budget. Optional.",
@@ -217,6 +249,8 @@
           name: input.name || "",
           email: input.email || "",
           phone: input.phone || "",
+          area: input.area || "",
+          projectType: PROJECT_TYPES.includes(input.projectType) ? input.projectType : "",
           message: input.message || "",
         };
         if (onContactPage()) {
