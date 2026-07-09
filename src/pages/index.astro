@@ -46,7 +46,7 @@ const recent = [
   <!-- Hero -->
   <header class="relative flex items-end overflow-hidden min-h-[88dvh] md:min-h-[600px] md:h-[88vh] md:max-h-[820px]">
     <div class="absolute inset-0 z-0">
-      <Image src={projectImage("p16.png")} alt="Hangard Construction — recent project" width={1920} quality={60} class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
+      <Image src={projectImage("p16.png")} alt="Hangard Construction — recent project" width={1920} quality={55} class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
     </div>
     <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.94) 0%, rgba(22,29,36,.72) 32%, rgba(22,29,36,.45) 65%, rgba(22,29,36,.28) 100%)"></div>
     <div class="relative z-20 w-full pb-16 md:pb-24 pt-28 md:pt-32">
@@ -110,7 +110,7 @@ const recent = [
         </div>
         <div class="lg:col-span-6 lg:col-start-7 relative">
           <div class="aspect-[4/5] border border-stone overflow-hidden relative z-10">
-            <Image src={projectImage("p23.png")} alt="Craftsmanship detail photo" width={760} class="w-full h-full object-cover" loading="lazy" />
+            <Image src={projectImage("p23.png")} alt="Craftsmanship detail photo" width={760} quality={65} class="w-full h-full object-cover" loading="lazy" />
           </div>
           <div class="hidden md:block absolute -bottom-6 -left-6 w-2/3 h-2/3 border border-stone bg-bone z-0"></div>
         </div>
@@ -163,7 +163,7 @@ const recent = [
           recent.map((p) => (
             <figure class="group">
               <div class="aspect-[4/5] border border-stone overflow-hidden mb-4">
-                <Image src={projectImage(p.src)} alt={`${p.title} in ${p.area}`} width={760} class="w-full h-full object-cover" loading="lazy" />
+                <Image src={projectImage(p.src)} alt={`${p.title} in ${p.area}`} width={760} quality={65} class="w-full h-full object-cover" loading="lazy" />
               </div>
               <figcaption class="flex items-baseline justify-between">
                 <span class="font-heading text-headline-sm text-ink">{p.title}</span>

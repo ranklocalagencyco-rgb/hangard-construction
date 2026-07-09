@@ -27,7 +27,7 @@ const [galA, galB, galC] = area.galleryImages;
 <!-- Hero -->
 <header class="relative pt-20 bg-black text-bone overflow-hidden">
   <div class="absolute inset-0 z-0 opacity-45">
-    <Image src={projectImage(area.heroImage)} alt={`Project in ${area.name}`} width={1600} class="w-full h-full object-cover" loading="eager" />
+    <Image src={projectImage(area.heroImage)} alt={`Project in ${area.name}`} width={1600} quality={55} class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
   </div>
   <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.94), rgba(22,29,36,.62))"></div>
   <div class="relative z-20">
@@ -70,7 +70,7 @@ const [galA, galB, galC] = area.galleryImages;
       </div>
       <div class="lg:col-span-5">
         <div class="aspect-[4/5] border border-stone overflow-hidden">
-          <Image src={projectImage(area.overviewImage.src)} alt={area.overviewImage.alt} width={760} class="w-full h-full object-cover" loading="lazy" />
+          <Image src={projectImage(area.overviewImage.src)} alt={area.overviewImage.alt} width={760} quality={65} class="w-full h-full object-cover" loading="lazy" />
         </div>
       </div>
     </div>
@@ -166,7 +166,7 @@ const [galA, galB, galC] = area.galleryImages;
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {[galA, galB, galC].map((g) => (
         <div class="aspect-[4/5] border border-stone overflow-hidden">
-          <Image src={projectImage(g)} alt={`Recent project near ${area.name}`} width={760} class="w-full h-full object-cover" loading="lazy" />
+          <Image src={projectImage(g)} alt={`Recent project near ${area.name}`} width={760} quality={65} class="w-full h-full object-cover" loading="lazy" />
         </div>
       ))}
     </div>

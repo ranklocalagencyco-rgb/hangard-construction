@@ -33,7 +33,7 @@ const featured = service.featuredAreas
 <!-- Hero -->
 <header class="relative pt-20 bg-black text-bone overflow-hidden">
   <div class="absolute inset-0 z-0">
-    <Image src={projectImage(service.heroImage)} alt={`${service.navLabel} — recent project`} width={1600} class="w-full h-full object-cover" loading="eager" />
+    <Image src={projectImage(service.heroImage)} alt={`${service.navLabel} — recent project`} width={1600} quality={55} class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
   </div>
   <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.9), rgba(22,29,36,.5))"></div>
   <div class="relative z-20" style="text-shadow:0 2px 18px rgba(22,29,36,.8)">
@@ -75,7 +75,7 @@ const featured = service.featuredAreas
       </div>
       <div class="lg:col-span-5">
         <div class="aspect-[4/5] border border-stone overflow-hidden">
-          <Image src={projectImage(service.overviewImage.src)} alt={service.overviewImage.alt} width={760} class="w-full h-full object-cover" loading="lazy" />
+          <Image src={projectImage(service.overviewImage.src)} alt={service.overviewImage.alt} width={760} quality={65} class="w-full h-full object-cover" loading="lazy" />
         </div>
       </div>
     </div>
@@ -112,7 +112,7 @@ const featured = service.featuredAreas
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {service.gallery.map((g) => (
         <div class="aspect-[4/5] border border-stone overflow-hidden">
-          <Image src={projectImage(g.src)} alt={g.alt} width={760} class="w-full h-full object-cover" loading="lazy" />
+          <Image src={projectImage(g.src)} alt={g.alt} width={760} quality={65} class="w-full h-full object-cover" loading="lazy" />
         </div>
       ))}
     </div>

@@ -72,7 +72,7 @@ const graph = postGraph({
 
   <Container class="mt-10 md:mt-12">
     <figure class="aspect-[16/9] border border-stone overflow-hidden">
-      <Image src={projectImage(d.heroImage)} alt={d.heroImageAlt} width={1600} class="w-full h-full object-cover" loading="eager" />
+      <Image src={projectImage(d.heroImage)} alt={d.heroImageAlt} width={1600} quality={55} class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
     </figure>
   </Container>
 

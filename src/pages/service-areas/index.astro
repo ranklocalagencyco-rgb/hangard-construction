@@ -17,7 +17,7 @@ import { areasHubGraph } from "../../lib/schema";
 >
   <header class="relative pt-20 bg-black text-bone overflow-hidden">
     <div class="absolute inset-0 z-0 opacity-40">
-      <Image src={projectImage("p16.png")} alt="Recent project across West London" width={1600} class="w-full h-full object-cover" loading="eager" />
+      <Image src={projectImage("p16.png")} alt="Recent project across West London" width={1600} quality={55} class="w-full h-full object-cover" loading="eager" fetchpriority="high" />
     </div>
     <div class="absolute inset-0 z-10 pointer-events-none" style="background:linear-gradient(to top, rgba(22,29,36,.92), rgba(22,29,36,.6))"></div>
     <div class="relative z-20">
