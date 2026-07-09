@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="col-span-2 md:col-span-2">
-      <h4 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Contact</h4>
+      <h2 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Contact</h2>
       <address class="not-italic space-y-3 text-body-md text-bone/65">
         <p>{site.addressLines[0]}<br />{site.addressLines[1]}<br />{site.addressLines[2]}</p>
         <p><a href={`tel:${site.phoneHref}`} class="hover:text-brass transition-colors">{site.phoneDisplay}</a></p>
@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="col-span-1 md:col-span-3">
-      <h4 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Services</h4>
+      <h2 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Services</h2>
       <ul class="space-y-3">
         {footerServices.map((s) => (
           <li><a href={serviceHref(s.silo, s.slug)} class="text-body-md text-bone/65 hover:text-brass transition-colors">{s.navLabel}</a></li>
@@ -67,7 +67,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="col-span-1 md:col-span-2">
-      <h4 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Areas</h4>
+      <h2 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Areas</h2>
       <ul class="space-y-3">
         {footerAreas.map(([slug, label]) => (
           <li><a href={areaHref(slug)} class="text-body-md text-bone/65 hover:text-brass transition-colors">{label}</a></li>
@@ -77,7 +77,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="col-span-2 md:col-span-2">
-      <h4 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Company</h4>
+      <h2 class="font-eyebrow text-eyebrow uppercase text-brass mb-6">Company</h2>
       <ul class="space-y-3">
         <li><a href="/" class="text-body-md text-bone/65 hover:text-brass transition-colors">Home</a></li>
         <li><a href="/about" class="text-body-md text-bone/65 hover:text-brass transition-colors">About</a></li>
@@ -92,6 +92,6 @@ const year = new Date().getFullYear();
 
   <div class="max-w-[1200px] mx-auto px-5 md:px-10 pt-8 border-t border-white/10 text-center space-y-2">
     <p class="font-body text-caption text-bone/60">© {year} {site.name}. All rights reserved.</p>
-    <p class="font-caption text-caption text-bone/55">This site is powered by <a href="https://ranklocalagency.co" target="_blank" rel="noopener" class="text-brass hover:text-bone transition-colors">Ranklocalagency</a></p>
+    <p class="font-caption text-caption text-bone/70">This site is powered by <a href="https://ranklocalagency.co" target="_blank" rel="noopener" class="text-brass underline underline-offset-2 hover:text-bone transition-colors">Ranklocalagency</a></p>
   </div>
 </footer>

@@ -57,13 +57,6 @@ const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@grap
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <!-- Material Symbols (icon font only; text fonts are self-hosted) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
-      rel="stylesheet"
-    />
     <!-- WebMCP: exposes site tools to AI agents (Chrome origin trial).
          Must stay an external script — the origin-trial token is a third-party
          token, which Chrome only honours when injected from an external file. -->
@@ -74,7 +67,9 @@ const graph = jsonLd ? JSON.stringify({ "@context": "https://schema.org", "@grap
   </head>
   <body class="bg-bone text-ink font-body antialiased selection:bg-brass/20 selection:text-ink">
     <Header />
-    <slot />
+    <main>
+      <slot />
+    </main>
     <Footer />
 
     <script>
